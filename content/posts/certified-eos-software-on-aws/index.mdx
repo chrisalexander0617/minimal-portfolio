@@ -1,0 +1,75 @@
+---
+title: Certified EOS Software On AWS Cloud
+date: 2022-09-12
+tags:
+  - Code
+  - Markdown
+---
+
+## What is EOS and what problems does it solve?
+
+EOS stands for Entrepreneurial Operating System which is a process that helps people get the most productivity from their business. Many CEOs have a difficult time understanding issues such as why growth is stagnant or turnover is high in certain departments. The EOS model helps leaders get and stay on the same page when it comes to delivering exceptional products, services and employee experience.
+
+## Planning
+
+Know Honesty, a certified EOS implementor needed to quickly development their EOS software and going over budget was not an option. With that in mind, we were happy to be able to design a solution that will allow
+
+- users to easily login without having to remember their password
+- users to take, review, and download their assessments from account or email
+- for administrators to view the demographics of and test scores of users based on age, gender, occupation, salary and more with option to filter and download as to CSV.
+
+## Tech Stack
+
+We decided to go with AWS Amplify, which is a development platform offered by Amazon Web Services (AWS) that provides a set of tools and services to build scalable and secure cloud-powered mobile and web applications at lower costs and development time.
+
+This application allows for users to login with a 6 digit code using their email address, take personality assessments and received an email once the test is complete. Administrators have exclusive access to the dashboard which shows every user who has taken a test, their scores and the demographic details. This will allow the client to download the data and visualize it using other tools easily since they were able to filter the results and download the data as an CSV file.
+
+The architecture of AWS Amplify consists of several components that work together to provide a seamless development experience.
+
+![Table](https://uploads-ssl.webflow.com/6408a2308ca9162843f131fd/64298678972b9e1fe8d2f934_0_oTFla168vkxDc_zR.png)
+
+## Solution
+
+Using AWS Cloud and React, we were able to build this application very quickly with little hiccups and technical debt, even when we did run into some issues. CI/CD was also implemented to ensure that every change we made was automatically deployed to the staging environment, which was used for demos. We created a separate server for production so that we always have a working product for demos in case anything breaks.
+
+![Passwordless Authentication](https://uploads-ssl.webflow.com/640001d57d68f8c8dd745da8/64526ee40250eda9bbd684e8_code.png)
+
+## Passwordless Authentication Using Amazon Cognito
+
+Amazon Cognito and Lambda came in handy with our password-less authentication flow. It was quite a challenge getting everything set up due to the learning curve and permissions for user groups. After reading enough documentation, we were able to write a lambda function that sent a challenge code to the user's email and allowed them to enter the code to access their account. This prevents a user from having to remember a password and allows user full responsibly over their account
+
+![Passwordless Authentication](https://uploads-ssl.webflow.com/640001d57d68f8c8dd745da8/645271334f0daf008a78df54_Screenshot%202023-05-03%20at%2010.35.22%20AM.png)
+
+![Passwordless Authentication](https://uploads-ssl.webflow.com/640001d57d68f8c8dd745da8/64526fc62eebfa2231b69faa_Screenshot%202023-05-03%20at%2010.28.08%20AM.png)
+
+## Branded PDF reports with jsPDF library
+
+jsPDF is a library that allows you to convert HTML to PDF but we ran into some challenges. We needed to allow users to take the test, get an email attachment of the test and save it to their account so it can be downloaded at a later time.
+
+AWS restricts the size of strings so using the base64 string was not an option
+Using S3 increases the budget and scope of the original project
+PDFs needed to be printed correctly on all modern browsers (mobile and desktop)
+SVGs needed to be properly displayed in the PDF exactly like it is in the HTML
+Using the blog output allowed us to keep the file size small while allowing the user get a high-quality PDF to their email and account home page.
+
+## Assessment Email Attachments
+
+We used Nodemailer library to handle the email attachment of the PDF results from the Lambda function. Amazon SES also provided this feature but it required more steps and added features we didn't need at the time. Nodemailer was perfect because it was lightweight and secure for email attachments.
+
+![Passwordless Authentication](https://uploads-ssl.webflow.com/640001d57d68f8c8dd745da8/64526ee152c5b9f8216719a4_dashboard.png)
+
+## Downloadable Data To CSV
+
+The table from the admin page allows users to down assessment data by categories such as age, gender, occupation and income.
+
+## Deliverables
+
+- Password-less Authentication Flow
+- Downloadable PDFs on mobile (including Safari) and on Desktop
+- PDF files attached in email after assessment submission
+- Bug fixes
+- Admin dashboard table with downloadable tests from various users
+- Rapid development and delivery
+- CSV exports
+
+[View Project ↗ ](https://www.thepursuitofhonesty.com)

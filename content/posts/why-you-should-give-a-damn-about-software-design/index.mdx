@@ -1,0 +1,148 @@
+---
+title: Why You Should Give a Damn About Software Design
+date: 2022-09-17
+description: Defence Against the Dark Arts (abbreviated as DADA) is a subject taught at Hogwarts School of Witchcraft and Wizardry and Ilvermorny School of Witchcraft and Wizardry. In this class, students study and learn how to defend themselves against all aspects of the Dark Arts, including dark creatures, curses, hexes and jinxes (dark charms), and duelling.
+tags:
+  - Tutorial
+banner: ./defence-against-the-dark-arts.jpg
+---
+
+There are 2 things that make software engineering suck. Bad team culture, and technical debt due to poor design. I couldn’t tell you how many personal projects I’ve abandoned due to not understanding my code and how frustrating it is working with a massive cluster of WET code all over the place.
+
+It makes me nauseous.
+
+Writing bad code is just part of human nature. Sometimes we forget things, creep in new ideas, and then get distracted and work on other things. Forgetting all about the structure of the software project and ignoring small warning signs that can lead to massive technical debt later on in the project.
+
+This article is not a tutorial but more of an overview for new developers and engineers to understand why software design patterns should be considered.
+
+## My Wake Up Call
+
+Being a developer with a non-traditional background can make it challenging to understand the “whys” of software engineering. I remember when I would ask questions about how something works in an application and I would receive a very good explanation but I also needed to understand why a particular solution was used.
+
+Other questions may include…
+
+- Why is the project structured this way?
+- Why did you write your classes like this?
+
+When working at a digital healthcare agency, I had the privilege to collaborate directly with engineers who broke this theory down for me. They were using the Factory design pattern and I think this is a great place for engineers to start if they are very new to design patterns.
+
+I also ask questions so I don’t embarrass myself later on. Asking questions is the best way to learn because no one knows what you don’t know.
+
+> “This makes no sense right now but I completely understand it!”
+
+This is what I said to myself after my manager explained the Factory design pattern for the first time. After I got used to the coding in this pattern, development was faster, testing a debugging was less of an ass-pain, and it allowed me to add and remove features with less code. Good software design enables developers to break down complex problems into smaller, more manageable pieces.
+
+Good software design solves problems before they appear.
+
+For single component applications and small projects. Software design isn’t really an issue.
+
+Some problems you won't truly understand until you start working with a large team on a big project, like someone not being able to see how much better synthetic oil is for your engine until they start having problems with their vehicle at around 120–150k miles.
+
+### Factory Design Pattern
+
+The Factory Design Pattern is a programming concept that allows you to create objects in a more flexible and controlled way.
+
+Imagine you need to create many products for your store, but each object is created differently based on some conditions. For example, if you were building cars, you know that they will all require at least 4 wheels, a gas tank, an engine, and so forth, but every car will have a unique color, shape, year, and model. Instead of creating each car entirely from scratch, you can build a blueprint to determine exactly how each car should be engineered.
+
+No need to keep returning to the drawing board.
+
+The factory has a method that takes in some parameters and based on those parameters, it creates the appropriate object and returns it to you. This way, you can create many objects easily and you can change how the objects are created by changing the factory’s method, instead of changing the entire program.
+
+Let’s take a look at the example below.
+
+```
+// Define an interface for the Product object
+interface Product {
+  name: string;
+  price: number;
+}
+
+// Define the concrete product classes that implement the Product interface
+class Book implements Product {
+  public name: string;
+  public price: number;
+
+  constructor(name: string, price: number) {
+    this.name = name;
+    this.price = price;
+  }
+}
+
+class Shirt implements Product {
+  public name: string;
+  public price: number;
+
+  constructor(name: string, price: number) {
+    this.name = name;
+    this.price = price;
+  }
+}
+
+// Define the factory class that creates the Product objects
+class ProductFactory {
+  public createProduct(type: string, name: string, price: number): Product {
+    if (type === 'book') {
+      return new Book(name, price);
+    } else if (type === 'shirt') {
+      return new Shirt(name, price);
+    } else {
+      throw new Error('Invalid product type.');
+    }
+  }
+}
+
+// Usage example
+const factory = new ProductFactory();
+
+const book = factory.createProduct('book', 'The Lord of the Rings', 20.99);
+const shirt = factory.createProduct('shirt', 'Blue T-Shirt', 12.99);
+
+console.log(book);
+console.log(shirt);
+```
+
+We first declared an interface that will name and price. Each product will have just these two variables. ProductFactory is responsible to handle the category of these products and building which every product is passed in as the first argument in the `createProduct` method.
+
+Here is a bad implementation of the Factory design pattern.
+
+```
+class Product {
+  public name: string;
+  public price: number;
+
+  constructor(name: string, price: number) {
+    this.name = name;
+    this.price = price;
+  }
+}
+
+class ProductFactory {
+  public createProduct(type: string, name: string, price: number): Product {
+    if (type === 'book') {
+      return new Product(name, price);
+    } else if (type === 'shirt') {
+      return new Product(name, price);
+    } else {
+      throw new Error('Invalid product type.');
+    }
+  }
+}
+
+
+// Usage example
+const factory = new ProductFactory();
+
+const book = factory.createProduct('book', 'The Lord of the Rings', 20.99);
+const shirt = factory.createProduct('shirt', 'Blue T-Shirt', 12.99);
+
+console.log(book);
+console.log(shirt);
+```
+
+As you can see the createProduct method is handling the type but there is no way for the program to determine which category a product is at a later time.
+
+Even if we added additional classes in productFactory, we would be breaking the rule requiring all classes to have a single purpose. This may not look like a big deal now but as this application grows, you may have a very difficult time maintaining it because of single changes affecting multiple modules throughout the project.
+
+## Final Thoughts
+
+Software design is a vital step that you should take when building an application you intend to scale and add additional features later on. It also helps with keeping things clean and organized so that you don’t run into any surprises later on.
